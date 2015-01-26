@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Main theme colors -->
+        <!--   your app's branding color (for the app bar) -->
+        <item name="colorPrimary">@color/indigo_500</item>
+        <!--   darker variant of colorPrimary (for status bar, contextual app bars) -->
+        <item name="colorPrimaryDark">@color/indigo_700</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/orange_A700</item>
+        <!-- textColorPrimary -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+
+        <!-- ...and here we setting appcompat’s color theming attrs -->
+
+        <item name="android:textColorSecondary">@android:color/white</item>
+
+    </style>
+
+</resources>
