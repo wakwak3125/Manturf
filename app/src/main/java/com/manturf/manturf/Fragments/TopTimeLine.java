@@ -63,7 +63,7 @@ public class TopTimeLine extends Fragment {
         return view;
     }
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mAdapter = new TopTimeLineAdapter(getActivity());
         ListView listView = (ListView)getView().findViewById(R.id.list1);
@@ -75,8 +75,16 @@ public class TopTimeLine extends Fragment {
                 ListView listView = (ListView)parent;
                 NomikaiList nomikaiList = (NomikaiList)listView.getItemAtPosition(position);
 
-
                 Intent detailActivity = new Intent(getActivity(),NomikaiDetail.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", nomikaiList.getId());
+                bundle.putString("飲み会のタイトル",nomikaiList.getTitle());
+                bundle.putString("飲み会の説明文",nomikaiList.getContent());
+                bundle.putString("業界",nomikaiList.getOccupation());
+                bundle.putString("場所",nomikaiList.getPlace());
+                bundle.putString("日時",nomikaiList.getDate());
+                bundle.putString("時間",nomikaiList.getTime());
+                detailActivity.putExtras(bundle);
                 startActivity(detailActivity);
 
                 Log.i(TAG,"onItemClick:");
@@ -84,7 +92,8 @@ public class TopTimeLine extends Fragment {
                 Log.i(TAG,"id = " + id);
                 Log.i(TAG,"Api側のid = " + nomikaiList.getId());
                 Log.i(TAG,"飲み会タイトル = " + nomikaiList.getTitle());
-                Log.i(TAG,"業界 = " + nomikaiList.getContent());
+                Log.i(TAG,"飲み会の説明文 = " + nomikaiList.getContent());
+                Log.i(TAG,"業界 = " + nomikaiList.getOccupation());
                 Log.i(TAG,"場所 = " + nomikaiList.getPlace());
                 Log.i(TAG,"日時 = " + nomikaiList.getDate());
                 Log.i(TAG,"時間 = " + nomikaiList.getTime());
