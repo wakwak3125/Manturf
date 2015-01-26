@@ -51,13 +51,10 @@
         android:layout_width="240dp"
         android:orientation="vertical"
         android:background="#ECEFF1">
-
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="0dp"/>
-
-
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout> 

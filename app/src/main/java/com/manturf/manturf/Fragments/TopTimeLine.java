@@ -1,6 +1,7 @@
 package com.manturf.manturf.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.manturf.manturf.AppController;
 import com.manturf.manturf.Item.NomikaiList;
+import com.manturf.manturf.NomikaiDetail;
 import com.manturf.manturf.R;
 import com.manturf.manturf.adapter.TopTimeLineAdapter;
 
@@ -56,7 +58,9 @@ public class TopTimeLine extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top_time_line, container, false);
+        View view = inflater.inflate(R.layout.fragment_top_time_line, container, false);
+
+        return view;
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -70,6 +74,11 @@ public class TopTimeLine extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView listView = (ListView)parent;
                 NomikaiList nomikaiList = (NomikaiList)listView.getItemAtPosition(position);
+
+
+                Intent detailActivity = new Intent(getActivity(),NomikaiDetail.class);
+                startActivity(detailActivity);
+
                 Log.i(TAG,"onItemClick:");
                 Log.i(TAG,"position = " + position);
                 Log.i(TAG,"id = " + id);

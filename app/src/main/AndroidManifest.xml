@@ -19,7 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".NomikaiDetail"
+            android:label="@string/title_activity_nomikai_detail">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.manturf.manturf.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -26,14 +26,18 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity implements Messeage.OnFragmentInteractionListener,
-        Timeline.OnFragmentInteractionListener,Favorites.OnFragmentInteractionListener,Profile.OnFragmentInteractionListener,TopTimeLine.OnFragmentInteractionListener{
+        Timeline.OnFragmentInteractionListener,Favorites.OnFragmentInteractionListener,
+        Profile.OnFragmentInteractionListener,TopTimeLine.OnFragmentInteractionListener{
+
+
 
     private DrawerLayout vDrawerLayout;
     private ActionBarDrawerToggle vDrawerToggle;
 
     ListView vListView;
-    static List<String>items = new ArrayList<>();
-    static ArrayAdapter<String>adapter;
+    private List<String>items = new ArrayList<>();
+    private ArrayAdapter<String>adapter;
+
 
     private void releaseView() {
         if (vListView != null) {
@@ -47,21 +51,21 @@ public class MainActivity extends ActionBarActivity implements Messeage.OnFragme
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        vListView = (ListView)findViewById(R.id.listview);
-
         items.add("ホーム");
         items.add("なんか");
         items.add("なんか");
         items.add("なんか");
+        items.size();
 
+        vListView = (ListView)findViewById(R.id.listview);
         adapter = new ArrayAdapter<>(this,R.layout.list_layout,R.id.item_title,items);
         vListView.setAdapter(adapter);
-
 
         // Initilization
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
@@ -76,8 +80,9 @@ public class MainActivity extends ActionBarActivity implements Messeage.OnFragme
 
         vDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         initDrawer();
-
     }
+
+
 
     private void initDrawer(){
         vDrawerToggle = new ActionBarDrawerToggle(this, vDrawerLayout, R.string.app_name, R.string.app_name);
@@ -85,8 +90,6 @@ public class MainActivity extends ActionBarActivity implements Messeage.OnFragme
         vDrawerLayout.setDrawerListener(vDrawerToggle);
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,7 +123,6 @@ public class MainActivity extends ActionBarActivity implements Messeage.OnFragme
         super.onConfigurationChanged(newConfig);
         vDrawerToggle.onConfigurationChanged(newConfig);
     }
-
 
     @Override
     public void onFragmentInteraction(Uri uri) {
