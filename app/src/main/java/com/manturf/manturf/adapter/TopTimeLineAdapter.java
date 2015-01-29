@@ -43,7 +43,7 @@ public class TopTimeLineAdapter extends ArrayAdapter<NomikaiList> {
 
         NomikaiList nomikaiList = getItem(position);
         imageView.setImageUrl(String.valueOf(nomikaiList.getId()),mImageLoader);
-        id.setText(String.valueOf(nomikaiList.getId()));
+        id.setText(String.valueOf(nomikaiList.getEventId()));
         title.setText(nomikaiList.getTitle());
         content.setText(nomikaiList.getContent());
         occupation.setText(nomikaiList.getOccupation());

@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -52,6 +54,8 @@ public class TopTimeLine extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        new Delete().from(NomikaiList.class).execute();
+
     }
 
     @Override
@@ -72,31 +76,42 @@ public class TopTimeLine extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListView listView = (ListView)parent;
-                NomikaiList nomikaiList = (NomikaiList)listView.getItemAtPosition(position);
+                ListView listView = (ListView) parent;
+                NomikaiList nomikaiList = (NomikaiList) listView.getItemAtPosition(position);
 
-                Intent detailActivity = new Intent(getActivity(),NomikaiDetail.class);
+                Intent detailActivity = new Intent(getActivity(), NomikaiDetail.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("id", nomikaiList.getId());
-                bundle.putString("飲み会のタイトル",nomikaiList.getTitle());
-                bundle.putString("飲み会の説明文",nomikaiList.getContent());
-                bundle.putString("業界",nomikaiList.getOccupation());
-                bundle.putString("場所",nomikaiList.getPlace());
-                bundle.putString("日時",nomikaiList.getDate());
-                bundle.putString("時間",nomikaiList.getTime());
+                bundle.putInt("id", nomikaiList.getEventId());
+                bundle.putString("飲み会のタイトル", nomikaiList.getTitle());
+                bundle.putString("飲み会の説明文", nomikaiList.getContent());
+                bundle.putString("業界", nomikaiList.getOccupation());
+                bundle.putString("場所", nomikaiList.getPlace());
+                bundle.putString("日時", nomikaiList.getDate());
+                bundle.putString("時間", nomikaiList.getTime());
                 detailActivity.putExtras(bundle);
                 startActivity(detailActivity);
 
-                Log.i(TAG,"onItemClick:");
-                Log.i(TAG,"position = " + position);
-                Log.i(TAG,"id = " + id);
-                Log.i(TAG,"Api側のid = " + nomikaiList.getId());
-                Log.i(TAG,"飲み会タイトル = " + nomikaiList.getTitle());
-                Log.i(TAG,"飲み会の説明文 = " + nomikaiList.getContent());
-                Log.i(TAG,"業界 = " + nomikaiList.getOccupation());
-                Log.i(TAG,"場所 = " + nomikaiList.getPlace());
-                Log.i(TAG,"日時 = " + nomikaiList.getDate());
-                Log.i(TAG,"時間 = " + nomikaiList.getTime());
+                Log.i(TAG, "onItemClick:");
+                Log.i(TAG, "position = " + position);
+                Log.i(TAG, "id = " + id);
+                Log.i(TAG, "Api側のid = " + nomikaiList.getEventId());
+                Log.i(TAG, "飲み会タイトル = " + nomikaiList.getTitle());
+                Log.i(TAG, "飲み会の説明文 = " + nomikaiList.getContent());
+                Log.i(TAG, "作成日 = " + nomikaiList.getCreated_at());
+                Log.i(TAG, "更新日 = " + nomikaiList.getUpdate_at());
+                Log.i(TAG, "日時 = " + nomikaiList.getDate());
+                Log.i(TAG, "場所 = " + nomikaiList.getPlace());
+                Log.i(TAG, "時間 = " + nomikaiList.getTime());
+                Log.i(TAG, "業界 = " + nomikaiList.getOccupation());
+
+                List<NomikaiList> list = new Select().from(NomikaiList.class).where("place = ?","渋谷").execute();
+                for (NomikaiList ii : list ) {
+                    Log.i(TAG, "場所が渋谷のEVENT_ID" + ii.getEventId());
+                    Log.i(TAG, "場所が渋谷のTITLE" + ii.getTitle());
+                    Log.i(TAG, "場所が渋谷の業界" + ii.getOccupation());
+                }
+
+
 
             }
         });
@@ -113,7 +128,6 @@ public class TopTimeLine extends Fragment {
                         // TODO:Jsonパースやで！
                         try {
                             List<NomikaiList> nomikaiLists = parse(jsonObject);
-
                             mAdapter.swapNomikaiList(nomikaiLists);
                         }
 
@@ -138,25 +152,35 @@ public class TopTimeLine extends Fragment {
 
     private List<NomikaiList> parse(JSONObject json)throws JSONException{
         ArrayList<NomikaiList> records = new ArrayList<>();
-
         JSONArray jsonimages = json.getJSONArray("all_events");
-
-        for (int i=0; i<jsonimages.length();i++){
+        for (int i = 0; i < jsonimages.length(); i++){
             JSONObject jsonimage = jsonimages.getJSONObject(i);
             int id = jsonimage.getInt("id");
             String title = jsonimage.getString("title");
             String content = jsonimage.getString("content");
+            String created_at = jsonimage.getString("created_at");
+            String updated_at = jsonimage.getString("updated_at");
+            String date = jsonimage.getString("date");
             String place = jsonimage.getString("place");
             String time = jsonimage.getString("time");
             String occupation = jsonimage.getString("occupation");
-            String date = jsonimage.getString("date");
-
-
-            NomikaiList record = new NomikaiList(id,title,content,place,time,occupation,date);
+            NomikaiList record = new NomikaiList(id,title,content,created_at,updated_at,date,place,time,occupation);
             records.add(record);
+
+            List<NomikaiList> list = new Select().from(NomikaiList.class).where("event_id = ?",5).execute();
+            for (NomikaiList ii : list ){
+                Log.i(TAG,"DB内のタイトルを取得" + ii.getOccupation());
+            }
+            record.save();
+
+
         }
+        for (int i = 0; i < records.size(); i++)
+        Log.i(TAG,"タイトルをforぶんまわし。" + records.get(i).getEventId());
         return records;
     }
+
+
 
 
 
